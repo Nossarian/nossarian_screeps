@@ -14,6 +14,7 @@ var roleHarvester = {
             })
                 if(target == null){
                     creep.say('No Silos')
+                    creep.moveTo(Math.random() * (50), Math.random() * (50))
                 }
                 if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#000fff'}})
