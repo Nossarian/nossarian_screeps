@@ -8,7 +8,8 @@ var buildAutoExtensions = {
                 }
             }
         )
-        if(roomExtensions.length < (roomController.level - 1)){
+        console.log(roomExtensions.length)
+        if(roomExtensions.length < (5 * (roomController.level - 1))){
             getNearbyConstructionSites(spawn.pos, STRUCTURE_EXTENSION)
         }
     }
@@ -23,8 +24,13 @@ function getNearbyConstructionSites(roomPos, strucType){
             for (y = 0; y < max; y++){
                 var pos1 = new RoomPosition((roomPos.x + x),(roomPos.y + y), roomPos.roomName)
                 var pos2 = new RoomPosition((roomPos.x + y),(roomPos.y + x), roomPos.roomName)
+                var pos3 = new RoomPosition((roomPos.x + x),(roomPos.y + x), roomPos.roomName)
                 if(pos1.createConstructionSite(strucType) == 0){
                     console.log("Constructing extension in " + roomPos.roomName + " @(" + pos1.x.toString() + "," + pos1.y.toString() + ")")
+                    break
+                }
+                if(pos3.createConstructionSite(strucType) == 0){
+                    console.log("Constructing extension in " + roomPos.roomName + " @(" + pos3.x.toString() + "," + pos3.y.toString() + ")")
                     break
                 }
                 if(pos2.createConstructionSite(strucType) == 0){

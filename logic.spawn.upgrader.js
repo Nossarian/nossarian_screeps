@@ -12,7 +12,11 @@ var spawnUpgrader = {
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader')
         
         if(upgraders.length < maxUpgradersInRoom){
-            var newName = spawn.createCreep([WORK, MOVE, MOVE, CARRY, CARRY], 
+            var bodyParts = [WORK, WORK, MOVE, CARRY]
+            for (i = 0; i < spawn.room.controller.level - 1;i++){
+                bodyParts.push(MOVE, CARRY, CARRY, WORK)
+            }
+            var newName = spawn.createCreep(bodyParts, 
                 undefined, 
                 {
                     role: 'upgrader',

@@ -7,7 +7,7 @@ var spawnUpgrader = require('logic.spawn.upgrader')
 var spawnStatus =  require('spawn.status')
 var maxHarvesters = 1
 var maxUpgraders = 4
-var maxBuilders = 7
+var maxBuilders = 3
 var buildAutoRoad = require('build.autoRoad')
 var buildAutoExtensions = require('build.autoExtensions')
 
@@ -20,9 +20,10 @@ module.exports.loop = function () {
     }
     
     for(var name in Game.rooms){
-        var controlStruc = Game.rooms[name].controller
-        for (var source in Game.rooms[name].find(FIND_SOURCES)){
-            buildAutoRoad.run(name,controlStruc.pos, Game.rooms[name].find(FIND_SOURCES)[source].pos)
+        var room = Game.rooms[name]
+        var controlStruc = room.controller
+        for (var source in room.find(FIND_SOURCES)){
+            buildAutoRoad.run(controlStruc.pos, room.find(FIND_SOURCES)[source].pos)
         }
     }
     
