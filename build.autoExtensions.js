@@ -8,7 +8,6 @@ var buildAutoExtensions = {
                 }
             }
         )
-        console.log(roomExtensions.length)
         if(roomExtensions.length < (5 * (roomController.level - 1))){
             getNearbyConstructionSites(spawn.pos, STRUCTURE_EXTENSION)
         }
