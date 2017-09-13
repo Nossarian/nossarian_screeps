@@ -1,30 +1,37 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('logic.spawn.upgrader');
- * mod.thing == 'a thing'; // true
- */
-
 var spawnUpgrader = {
     run: function(spawn, maxUpgradersInRoom){
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader')
+        var roomExtensions = spawn.room.find(FIND_STRUCTURES, {
+                filter: (structure) => {
+                    return(structure.structureType == STRUCTURE_EXTENSION)
+                }
+            }
+        )
         
         if(upgraders.length < maxUpgradersInRoom){
-            var bodyParts = [WORK, WORK, MOVE, CARRY]
-            for (i = 0; i < spawn.room.controller.level - 1;i++){
-                bodyParts.push(MOVE, CARRY, CARRY, WORK)
-            }
-            var newName = spawn.createCreep(bodyParts, 
-                undefined, 
-                {
-                    role: 'upgrader',
-                    upgrading: false
-            })
-            console.log('Spawning new upgrader: ' + newName)
+            mostExpensiveVariant(Game.spawns[spawn.name], 'upgrader', [WORK,WORK,MOVE,CARRY], [WORK, CARRY, CARRY, MOVE], spawn.room.controller.level, roomExtensions.length)
         }
     }
+}
+
+function mostExpensiveVariant(spawnObj, roleName, baseParts, partsPerLevel, controllerLevel, numExtensions){
+        var availableTries = ((numExtensions - (numExtensions % 5)) / 5)
+        var newParts = baseParts
+        for (i = 0; i < availableTries;i++){
+            newParts = newParts.concat(partsPerLevel)
+        }
+        var newName = spawnObj.createCreep(newParts, 
+            undefined, 
+            {
+                role: roleName,
+        })
+        if(newName == -6 && spawnObj.memory.announcedFailure == false){
+            console.log('[' + Date.toUTCString() + ']Insufficient Resources for : ' + roleName + ' with - ' + newParts)
+            spawnObj.memory.announcedFailure = true
+        } else if (newName == 0){
+            spawnObj.memory.announcedFailure = false
+            console.log('Spawning new upgrader: ' + newName)
+        }
 }
 
 module.exports = spawnUpgrader

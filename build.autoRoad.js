@@ -10,10 +10,7 @@ var constructionPlanner = require('build.constructionPlanner')
 
 var buildAutoRoad = {
     run: function(pos1, pos2){
-        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder')
-        if(builders.length = 0){
-            constructionPlanner.buildRoads(pos1, pos2)
-        }
+        constructionPlanner.buildRoads(pos1, pos2)
     }
 }
 

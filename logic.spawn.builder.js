@@ -12,7 +12,7 @@ var spawnBuilder = {
         var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder')
         
         if(builders.length < maxBuilders){
-            var newName = spawn.createCreep([WORK, MOVE, CARRY, CARRY], 
+            var newName = spawn.createCreep([WORK, MOVE, CARRY, CARRY, CARRY], 
                 undefined,
                  {
                 role: 'builder',
